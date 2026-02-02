@@ -240,4 +240,5 @@ It demonstrates how **state-driven design**, supported by MVC, results in a syst
 ---
 
 **Authors:** Batıkan Akdeniz, Zeynep Yıldız
+
 **Focus:** Clean Architecture · Design Patterns · Object-Oriented Design
