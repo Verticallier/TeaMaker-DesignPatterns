@@ -1,0 +1,15 @@
+# NetBeans specific files
+build/
+dist/
+nbproject/private/
+/nbproject/Makefile-*.mk
+/nbproject/Package-*.bash
+
+# Database and log files
+*.log
+# Only upload teaMakerDB.sql if it contains the schema, not personal data
+teaMakerDB.sql 
+
+# System files
+.DS_Store
+Thumbs.db
