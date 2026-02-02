@@ -1,157 +1,243 @@
 # ☕ TeaMaker – Advanced Design Patterns Project
 
-This project is a **sophisticated Tea Maker Simulation** built with **Java**, designed to demonstrate the **practical application of Software Design Patterns** in a realistic, state-driven system.
+TeaMaker is a **state-driven tea machine simulation** developed in **Java**, designed to demonstrate the **practical and combined use of software design patterns** in a realistic system.
 
-The application models real-world machine behavior, manages user notifications dynamically, and persists usage data through a repository layer backed by a MySQL database.  
-While **MVC** is used as a supporting architectural pattern, the core focus of the project is on **behavioral and structural design patterns**, especially **State-driven system design**.
+The project focuses on **behavioral correctness**, **clean separation of concerns**, and **extensibility**, rather than simple UI interactions.  
+While **MVC (Model–View–Controller)** is used as a **supporting architectural pattern**, the **core emphasis** of the project is on **behavioral and structural design patterns**, especially the **State Pattern**.
 
 ---
 
-## ⚡ System at a Glance
+## 🚀 Project Overview
 
-- **State Pattern** controls machine behavior and lifecycle
-- **Observer Pattern** keeps the UI reactively synchronized
-- **Decorator Pattern** injects health warnings dynamically
-- **Repository Pattern** persists brewing history to a database
-- **MVC Architecture** cleanly separates UI, logic, and control flow
+TeaMaker simulates the lifecycle of a real tea machine, including:
+
+- State-based behavior transitions  
+- Reactive UI updates  
+- Health-aware user notifications  
+- Persistent usage logging via a database  
+
+The system is intentionally designed to avoid complex conditional logic and instead relies on **well-defined object collaboration**.
+
+---
+
+## ⚡ Key Concepts at a Glance
+
+- **State Pattern** for machine lifecycle control  
+- **Observer Pattern** for reactive UI updates  
+- **Decorator Pattern** for dynamic message enrichment  
+- **Repository Pattern** for persistence abstraction  
+- **MVC Architecture** for clean separation of responsibilities  
 
 ---
 
 ## 🎯 Architectural Motivation
 
-This project was intentionally designed as a **state-driven system** to accurately model real-world machine behavior.
+This project was built with the goal of modeling **real-world machine behavior** as accurately and cleanly as possible.
 
-- The **State Pattern** eliminates complex conditional logic by encapsulating behavior within discrete machine states.
-- The **Observer Pattern** ensures the system remains reactive without tight coupling between UI and business logic.
-- The **Decorator Pattern** enables runtime extension of system messages without modifying core classes.
-- **MVC** is used as a *supporting architecture* to keep concerns clearly separated and the codebase maintainable.
+### Why State-Driven Design?
 
-The result is a clean, extensible, and easily understandable architecture that scales in complexity without sacrificing readability.
+- Avoids `if-else` or `switch`-based logic explosions  
+- Each machine state owns its behavior  
+- New states can be added with minimal changes  
 
----
+### Why Observer?
 
-## 🎯 Project Features & Capabilities
+- Keeps UI synchronized without tight coupling  
+- Eliminates direct UI manipulation from business logic  
 
-### 🔹 State Management
-- Simulates a real tea machine lifecycle:
-  **Empty → Boiling → Brewing → Done**
-- Each state defines its own valid actions and transitions
+### Why Decorator?
 
-### 🔹 Health Monitoring
-- Automatically tracks daily tea consumption
-- Warns the user when the daily limit (**10 cups**) is exceeded
-- Implemented using the **Decorator Pattern**
+- Enables runtime enhancement of messages  
+- Avoids subclass explosion for optional features  
 
-### 🔹 Data Persistence
-- Logs every brewing cycle to a **MySQL database**
-- Tracks historical usage via a repository abstraction
+### Why MVC (Supporting Role)?
 
-### 🔹 Asynchronous Operations
-- Uses **Timers** to simulate boiling and brewing durations
-- Prevents UI freezing during long-running operations
+- Keeps UI, control flow, and business logic independent  
+- Improves readability and long-term maintainability  
+
+> **Important:**  
+> MVC provides the *structural backbone*, but **system behavior is governed by design patterns**, not controllers.
 
 ---
 
-## 🏗️ Architecture & Design Patterns
+## 🧠 Machine Lifecycle (State Pattern)
 
-This project goes beyond basic examples by combining multiple **architectural** and **design patterns** in a cohesive system.
+The tea machine follows a strict lifecycle:
+ ```
+Empty → Idle → Boiling → Brewing → Done
+ ```
 
----
 
-### 1️⃣ Supporting MVC Architecture (Model–View–Controller)
+Each state:
 
-The application follows MVC principles to ensure separation of concerns:
+- Defines which actions are allowed  
+- Controls valid transitions  
+- Encapsulates its own behavior  
 
-- **Model**  
-  `TeaMakerMachine`  
-  Contains business logic and manages state transitions.
-
-- **View**  
-  `TeaMaker.java`  
-  Swing-based graphical user interface observing system changes.
-
-- **Controller**  
-  `TeaMakerController.java`  
-  Handles user input and coordinates updates between View and Model.
-
-> MVC acts as a **structural foundation**, while system behavior is driven primarily by design patterns.
+This ensures the system **cannot enter an invalid state**.
 
 ---
 
-### 2️⃣ Behavioral & Structural Design Patterns
+## 🔔 Health Monitoring (Decorator Pattern)
 
-| Pattern | Implementation | Purpose |
-|------|---------------|--------|
-| **State Pattern** | `State` interface, `BoilingWaterState`, `TeaState`, etc. | Encapsulates machine behavior and removes complex `if-else` logic. |
-| **Observer Pattern** | `Subject` and `Observer` interfaces | Automatically updates the GUI when the machine state or message changes. |
-| **Decorator Pattern** | `HealthWarningDecorator` wrapping `BaseMessage` | Dynamically appends health warnings when daily tea consumption exceeds the threshold (10 cups). |
-| **Repository Pattern** | `TeaLogRepository` | Abstracts all SQL operations from business logic, making the data layer interchangeable. |
+The system monitors daily tea consumption:
+
+- Daily limit: **10 cups**
+- When exceeded:
+  - The message output is dynamically wrapped
+  - A health warning is appended **without modifying core logic**
+
+This is achieved via the **Decorator Pattern**, keeping the system open for extension and closed for modification.
+
+---
+
+## 💾 Data Persistence (Repository Pattern)
+
+Every brewing operation is logged into a **MySQL database**.
+
+### Why Repository?
+
+- Decouples SQL logic from business logic  
+- Makes the data layer replaceable  
+- Improves testability and readability  
+
+All database interactions are handled through:
+
+`TeaLogRepository`
+
+
+---
+
+## 🧩 MVC Architecture Breakdown
+
+### 🟦 Model
+**TeaMakerMachine**
+
+- Holds current state  
+- Manages transitions  
+- Triggers notifications  
+
+### 🟩 View
+**TeaMaker.java**
+
+- Java Swing–based UI  
+- Observes system changes  
+- Displays messages and machine status  
+
+### 🟥 Controller
+**TeaMakerController.java**
+
+- Handles user input  
+- Invokes machine actions  
+- Coordinates Model and View  
+
+> MVC is intentionally **lightweight** and does not contain business rules.
+
+---
+
+## 🧱 Design Patterns Used
+
+| Pattern | Location | Purpose |
+|------|--------|--------|
+| **State** | `State`, `EmptyState`, `BoilingWaterState`, `TeaState`, etc. | Encapsulates machine behavior and transitions |
+| **Observer** | `Subject`, `Observer` | Keeps UI reactive and loosely coupled |
+| **Decorator** | `HealthWarningDecorator`, `BaseMessage` | Dynamically enhances system messages |
+| **Repository** | `TeaLogRepository` | Abstracts persistence operations |
+| **MVC** | Model / View / Controller classes | Structural separation of concerns |
 
 ---
 
 ## 🛠️ Technical Stack
 
-- **Language:** Java (JDK 8+)
-- **GUI:** Java Swing (NetBeans-generated)
-- **Database:** MySQL 8.0
-- **Driver:** MySQL Connector/J
-- **Build Tool:** Apache Ant
+- **Language:** Java (JDK 8+)  
+- **GUI:** Java Swing  
+- **Database:** MySQL 8.0  
+- **Driver:** MySQL Connector/J  
+- **Build Tool:** Apache Ant  
+- **IDE:** NetBeans / IntelliJ IDEA  
 
 ---
 
 ## 📂 Database Setup
 
-The project requires a MySQL database to log tea consumption history.
-
-1. Create a database named:
+1. Create the database:
    ```sql
-   teaMakerDB
-Run the provided teaMakerDB.sql script to create the required tables.
-
-Update database credentials in:
-
+   CREATE DATABASE teaMakerDB;
+    ```
+2. Run the provided SQL script:
+ ```
+teaMakerDB.sql
+ ```
+3.Update credentials in:
+ ```
 src/DBConnection.java
+ ```
+ ```
 private static final String USER = "root";
 private static final String PASSWORD = "YOUR_PASSWORD";
-🚀 How It Works (Under the Hood)
-🔹 Initialization
-The machine starts in the EmptyState.
+ ```
 
-🔹 State Flow
-Fill
-User fills water → transitions to IdleState
+---
 
-Boil
-User clicks Boil → transitions to BoilingWaterState (Timer starts)
+## ⚙️ How the System Works
 
-Brew
-Timer completes → transitions to TeaState
+### 🔹 Initialization
+- The machine starts in **`EmptyState`**
 
-Pour
-User pours tea → usage data is logged via TeaLogRepository
+### 🔹 User Flow
+1. **Fill water** → transitions to `IdleState`
+2. **Boil** → transitions to `BoilingWaterState` (Timer starts)
+3. **Brew** → transitions to `TeaState`
+4. **Pour** → transitions to `DoneState`
+5. **Log usage** → persisted via `TeaLogRepository`
 
-🔹 Smart Warnings
-Before displaying any message, the system checks daily consumption.
+### 🔹 Smart Notifications
+Before displaying any message:
+- Daily tea consumption is checked
+- If the limit is exceeded:
+  - The message is wrapped by `HealthWarningDecorator`
+  - A health warning is dynamically appended
 
-If dailyCups > 10, the HealthWarningDecorator wraps the base message and appends a warning.
+---
 
-🚫 Non-Goals
-This project intentionally does not aim to:
+## 🚫 Non-Goals
 
-Control a real IoT tea machine
+This project intentionally does **not** aim to:
+- Control a real IoT tea machine
+- Provide production-level concurrency or scalability
+- Act as a full beverage management system
 
-Implement production-level concurrency or scaling
+The focus is strictly on:
+> **Architecture, design patterns, and clean object-oriented design**
 
-Provide a full beverage management system
+---
 
-The focus is strictly on architecture, design patterns, and clean system design.
+## 🔮 Future Improvements
 
-🔮 Future Improvements
- Dependency Injection
-Introduce Spring or Guice to manage TeaLogRepository and DBConnection.
+- **Dependency Injection**  
+  Introduce Spring or Guice
 
- Unit Testing
-Add JUnit tests for State transitions and Decorator behavior.
+- **Unit Testing**  
+  Add JUnit tests for State transitions
 
- Docker Support
-Containerize the MySQL database for easier setup.
+- **Docker Support**  
+  Containerize the MySQL environment
+
+- **Logging Framework**  
+  Replace `System.out` with Log4j or SLF4J
+
+---
+
+## 📌 Final Notes
+
+This project is intentionally designed to go **beyond textbook examples** by combining multiple design patterns into a **cohesive, realistic system**.
+
+It demonstrates how **state-driven design**, supported by MVC, results in a system that is:
+- Easy to reason about
+- Easy to extend
+- Easy to maintain
+
+---
+
+**Authors:** Batıkan Akdeniz  , Zeynep Yıldız
+**Focus:** Clean Architecture · Design Patterns · Object-Oriented Design
