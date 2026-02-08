@@ -1,4 +1,4 @@
-# ☕ TeaMaker – Advanced Design Patterns Project
+# ☕ TeaMaker – Advanced Design Patterns Project 
 
 TeaMaker is a **state-driven tea machine simulation** developed in **Java**, designed to demonstrate the **practical and combined use of software design patterns** in a realistic system.
 
